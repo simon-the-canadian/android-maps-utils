@@ -16,11 +16,11 @@
 
 package com.google.maps.android.clustering.algo;
 
-import java.util.Collection;
-import java.util.Set;
-
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
+
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * Logic for computing clusters
@@ -37,4 +37,8 @@ public interface Algorithm<T extends ClusterItem> {
     Set<? extends Cluster<T>> getClusters(double zoom);
 
     Collection<T> getItems();
+
+    void setMaxDistanceBetweenClusteredItems(int maxDistance);
+
+    int getMaxDistanceBetweenClusteredItems();
 }

@@ -16,11 +16,6 @@
 
 package com.google.maps.android.clustering.algo;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
 import android.support.v4.util.LongSparseArray;
 
 import com.google.maps.android.clustering.Cluster;
@@ -28,11 +23,18 @@ import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.geometry.Point;
 import com.google.maps.android.projection.SphericalMercatorProjection;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Groups markers into a grid.
  */
 public class GridBasedAlgorithm<T extends ClusterItem> implements Algorithm<T> {
-    private static final int GRID_SIZE = 100;
+    private static final int DEFAULT_GRID_SIZE = 100;
+
+    private int mGridSize = DEFAULT_GRID_SIZE;
 
     private final Set<T> mItems = Collections.synchronizedSet(new HashSet<T>());
 
@@ -57,8 +59,18 @@ public class GridBasedAlgorithm<T extends ClusterItem> implements Algorithm<T> {
     }
 
     @Override
+    public void setMaxDistanceBetweenClusteredItems(int maxDistance) {
+        mGridSize = maxDistance;
+    }
+
+    @Override
+    public int getMaxDistanceBetweenClusteredItems() {
+        return mGridSize;
+    }
+
+    @Override
     public Set<? extends Cluster<T>> getClusters(double zoom) {
-        long numCells = (long) Math.ceil(256 * Math.pow(2, zoom) / GRID_SIZE);
+        long numCells = (long) Math.ceil(256 * Math.pow(2, zoom) / mGridSize);
         SphericalMercatorProjection proj = new SphericalMercatorProjection(numCells);
 
         HashSet<Cluster<T>> clusters = new HashSet<Cluster<T>>();
